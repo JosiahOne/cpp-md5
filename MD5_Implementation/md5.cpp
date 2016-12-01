@@ -17,13 +17,15 @@ int main(int argc, char *argv[])
   memoryBlock = argv[1];
   size = strlen(memoryBlock);
 
+  std::cout << size << std::endl;
+
   // *************************************************************************/
   // ****************************    STEP 1    *******************************/
   // *************************************************************************/
 
-  // Step 1. Add Padding to bytelength = 56 mod 64
+  // Step 1. Add Padding so bytelength = 56 mod 64
 
-  size_t additionalPaddingLength = 56 - (size % 64);
+  unsigned int additionalPaddingLength = 56 - (size % 64);
 
   if (additionalPaddingLength == 0) {
     additionalPaddingLength = 64;
@@ -36,22 +38,23 @@ int main(int argc, char *argv[])
     paddedBlock[i] = memoryBlock[i];
   }
 
-  // Copy Padding
 
-  for (size_t i = 0; i < additionalPaddingLength; i++) {
+
+  // Copy Padding
+  for (unsigned int i = 0; i < additionalPaddingLength; i++) {
     if (i == 0) {
-      paddedBlock[(unsigned long long)(size) + i] = 128;
+      paddedBlock[(unsigned long long)(size) + (unsigned long long)(i)] = (unsigned char)(0x80);
     } else {
-      paddedBlock[(unsigned long long)(size) + i] = 0;
+      paddedBlock[(unsigned long long)(size) + (unsigned long long)(i)] = 0;
     }
   }
 
   // *************************************************************************/
-  // ****************************    STEP 2    *******************************/
+  // ****************************    STEP 2    *******************************/ VERIFIED
   // *************************************************************************/
 
   // Append Length
-  unsigned long long longSize = (unsigned long long)(size);
+  unsigned long long longSize = 8 * (unsigned long long)(size);
   std::cout << longSize << std::endl;
 
   // Low order word.
@@ -91,12 +94,13 @@ int main(int argc, char *argv[])
   paddedBlock[(unsigned long long)(size) + additionalPaddingLength + 6] = highWord.midHighByte;
   paddedBlock[(unsigned long long)(size) + additionalPaddingLength + 7] = highWord.highByte;
 
-  std::ofstream outFile("ThruStep2.txt");
 
   //for (int i = 0; i < (unsigned long long)(size); i++) {
   for (int i = 0; i < (unsigned long long)(size) + additionalPaddingLength + 8; i++) {
-    outFile << paddedBlock[i];
+    printf("%02X", (unsigned char)(paddedBlock[i]));
   }
+
+  std::cout << std::endl;
 
   // *************************************************************************/
   // ****************************    STEP 3    *******************************/
@@ -267,8 +271,8 @@ int main(int argc, char *argv[])
   std::cout << (unsigned int)(lowDByte) << (unsigned int)(midLowDByte) << (unsigned int)(midHighDByte) << (unsigned int)(highDByte);
 
 
-  delete[] memoryBlock;
-  delete[] paddedBlock;
+  //free(memoryBlock);
+  //delete[] paddedBlock;
 
   return 0;
 }
