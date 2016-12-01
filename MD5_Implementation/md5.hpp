@@ -46,6 +46,10 @@ public:
     words.push_back(word);
   }
 
+  unsigned int size() {
+    return words.size();
+  }
+
   unsigned int operator[](unsigned int i) {
     return words[i].asInt();
   }
