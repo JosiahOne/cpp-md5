@@ -1,5 +1,7 @@
 #include <vector>
 
+//#define DEBUG true
+
 // MD5 Main Header
 class WORD {
 public:
@@ -7,7 +9,7 @@ public:
   WORD() : highByte(0), midHighByte(0), midLowByte(0), lowByte(0) {}
 
   unsigned int asInt() {
-    int result = 0;
+    unsigned int result = 0;
 
     if (sizeof(unsigned int) == 4) {
       *((unsigned char *)&result + 0) = lowByte;
@@ -22,7 +24,7 @@ public:
     }
   }
 
-  void setLowOrderFirst(char aLowByte, char aMidLowByte, char aMidHighByte, char aHighByte) {
+  void setLowOrderFirst(unsigned char aLowByte, unsigned char aMidLowByte, unsigned char aMidHighByte, unsigned char aHighByte) {
     lowByte = aLowByte;
     midLowByte = aMidLowByte;
     midHighByte = aMidHighByte;
@@ -34,10 +36,10 @@ public:
   }
 
 public:
-  char highByte;
-  char midHighByte;
-  char midLowByte;
-  char lowByte;
+  unsigned char highByte;
+  unsigned char midHighByte;
+  unsigned char midLowByte;
+  unsigned char lowByte;
 };
 
 class BLOCK {
@@ -99,6 +101,9 @@ namespace MD5 {
   }
 
   void Round1(unsigned int &a, unsigned int b, unsigned int c, unsigned int d, unsigned int k, unsigned int s, unsigned int i, BLOCK X) {
+    #ifdef DEBUG
+    printf("Rotate Left(%x, %x, %x, %x, %d)\n", a, MD5::F(b, c, d), X[k], MD5::T[i], s);
+    #endif
     a = b + MD5::RotateLeft((a + MD5::F(b, c, d) + X[k] + MD5::T[i]), s);
   }
 
