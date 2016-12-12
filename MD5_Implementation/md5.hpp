@@ -1,7 +1,5 @@
 #include <vector>
 
-//#define DEBUG true
-
 // MD5 Main Header
 class WORD {
 public:
@@ -61,7 +59,7 @@ private:
 };
 
 namespace MD5 {
-  std::vector<unsigned int> T = {0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,  // VERIFIED
+  std::vector<unsigned int> T = {0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
                                  0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501,
                                  0x698098d8, 0x8b44f7af, 0xffff5bb1, 0x895cd7be,
                                  0x6b901122, 0xfd987193, 0xa679438e, 0x49b40821,
@@ -101,9 +99,6 @@ namespace MD5 {
   }
 
   void Round1(unsigned int &a, unsigned int b, unsigned int c, unsigned int d, unsigned int k, unsigned int s, unsigned int i, BLOCK X) {
-    #ifdef DEBUG
-    printf("Rotate Left(%x, %x, %x, %x, %d)\n", a, MD5::F(b, c, d), X[k], MD5::T[i], s);
-    #endif
     a = b + MD5::RotateLeft((a + MD5::F(b, c, d) + X[k] + MD5::T[i]), s);
   }
 

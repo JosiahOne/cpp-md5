@@ -3,49 +3,6 @@
 #include "md5.hpp"
 #include <fstream>
 
-void printBytes(int index, unsigned int A, unsigned int B, unsigned int C, unsigned int D)
-{
-  #ifdef DEBUG
-  std::cout << "\n----------------------" << index << "-------------------------\n";
-  #endif
-  unsigned char lowAByte = *((unsigned char *)&A + 0);
-  unsigned char midLowAByte = *((unsigned char *)&A + 1);
-  unsigned char midHighAByte = *((unsigned char *)&A + 2);
-  unsigned char highAByte = *((unsigned char *)&A + 3);
-
-  #ifdef DEBUG
-  printf("%2.2x%2.2x%2.2x%2.2x ", lowAByte, midLowAByte, midHighAByte, highAByte);
-  #endif
-
-  unsigned char lowBByte = *((unsigned char *)&B + 0);
-  unsigned char midLowBByte = *((unsigned char *)&B + 1);
-  unsigned char midHighBByte = *((unsigned char *)&B + 2);
-  unsigned char highBByte = *((unsigned char *)&B + 3);
-
-  #ifdef DEBUG
-  printf("%2.2x%2.2x%2.2x%2.2x ", lowBByte, midLowBByte, midHighBByte, highBByte);
-  #endif
-
-  unsigned char lowCByte = *((unsigned char *)&C + 0);
-  unsigned char midLowCByte = *((unsigned char *)&C + 1);
-  unsigned char midHighCByte = *((unsigned char *)&C + 2);
-  unsigned char highCByte = *((unsigned char *)&C + 3);
-
-  #ifdef DEBUG
-  printf("%2.2x%2.2x%2.2x%2.2x ", lowCByte, midLowCByte, midHighCByte, highCByte);
-  #endif
-
-  unsigned char lowDByte = *((unsigned char *)&D + 0);
-  unsigned char midLowDByte = *((unsigned char *)&D + 1);
-  unsigned char midHighDByte = *((unsigned char *)&D + 2);
-  unsigned char highDByte = *((unsigned char *)&D + 3);
-
-  #ifdef DEBUG
-  printf("%2.2x%2.2x%2.2x%2.2x ", lowDByte, midLowDByte, midHighDByte, highDByte);
-  std::cout << "\n------------------------------------------------\n";
-  #endif
-}
-
 int main(int argc, char *argv[])
 {
   bool noInput = false;
@@ -81,18 +38,10 @@ int main(int argc, char *argv[])
     additionalPaddingLength = 64;
   }
 
-  #ifdef DEBUG
-  std::cout << "PADDING: " << additionalPaddingLength << std::endl;
-  #endif
-
   if (((additionalPaddingLength + size) % 64) != 56) {
     std::cerr << "INVALID";
     exit(1);
   }
-
-  #ifdef DEBUG
-  std::cout << "LENGTH: " << (unsigned long long)(size) + additionalPaddingLength + 8 << std::endl;
-  #endif
 
   paddedBlock = new char[(unsigned long long)(size) + additionalPaddingLength + 8];
 
@@ -111,7 +60,7 @@ int main(int argc, char *argv[])
   }
 
   // *************************************************************************/
-  // ****************************    STEP 2    *******************************/ VERIFIED
+  // ****************************    STEP 2    *******************************/
   // *************************************************************************/
 
   // Append Length
@@ -153,13 +102,6 @@ int main(int argc, char *argv[])
   paddedBlock[(unsigned long long)(size) + additionalPaddingLength + 5] = highWord.midLowByte;
   paddedBlock[(unsigned long long)(size) + additionalPaddingLength + 6] = highWord.midHighByte;
   paddedBlock[(unsigned long long)(size) + additionalPaddingLength + 7] = highWord.highByte;
-
-  #ifdef DEBUG
-  for (int i = 0; i < (unsigned long long)(size) + additionalPaddingLength + 8; i++) {
-    printf("%02X", (unsigned char)(paddedBlock[i]));
-  }
-  std::cout << std::endl;
-  #endif
 
   // *************************************************************************/
   // ****************************    STEP 3    *******************************/
@@ -204,41 +146,25 @@ int main(int argc, char *argv[])
     unsigned int DD = D;
 
     // Round 1
-    printBytes(0, A, B, C, D);
-
     MD5::Round1(A, B, C, D, 0, 7, 0, X);
     MD5::Round1(D, A, B, C, 1, 12, 1, X);
     MD5::Round1(C, D, A, B, 2, 17, 2, X);
     MD5::Round1(B, C, D, A, 3, 22, 3, X);
-    printBytes(4, A, B, C, D);
-
 
     MD5::Round1(A, B, C, D, 4, 7, 4, X);
     MD5::Round1(D, A, B, C, 5, 12, 5, X);
     MD5::Round1(C, D, A, B, 6, 17, 6, X);
     MD5::Round1(B, C, D, A, 7, 22, 7, X);
 
-    printBytes(8, A, B, C, D);
-
-
     MD5::Round1(A, B, C, D, 8, 7, 8, X);
     MD5::Round1(D, A, B, C, 9, 12, 9, X);
     MD5::Round1(C, D, A, B, 10, 17, 10, X);
     MD5::Round1(B, C, D, A, 11, 22, 11, X);
 
-    printBytes(12, A, B, C, D);
-
-
     MD5::Round1(A, B, C, D, 12, 7, 12, X);
-    printBytes(13, A, B, C, D);
     MD5::Round1(D, A, B, C, 13, 12, 13, X);
-    printBytes(14, A, B, C, D);
     MD5::Round1(C, D, A, B, 14, 17, 14, X);
-    printBytes(15, A, B, C, D);
     MD5::Round1(B, C, D, A, 15, 22, 15, X);
-
-    printBytes(16, A, B, C, D);
-
 
     // Round 2
 
