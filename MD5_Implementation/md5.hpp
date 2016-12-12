@@ -1,6 +1,9 @@
+// MD5 Main Header
+//
+// Josiah Bruner - December 12th, 2016.
+
 #include <vector>
 
-// MD5 Main Header
 class WORD {
 public:
 

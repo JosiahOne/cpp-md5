@@ -1,3 +1,7 @@
+// MD5 Implementation
+//
+// Josiah Bruner - December 12th, 2016.
+
 #include <iostream>
 #include <iomanip>
 #include "md5.hpp"
